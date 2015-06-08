@@ -11,6 +11,7 @@
 #include "low_cache.h"
 #include "time.h"
 
+int demo1, demo2; //Pour afficher les 5 premiers blocs et le 5 premiers blocs qu'on remplace (doivent être les mêmes) 
 
 /*!
  * FIFO : pas grand chose à faire ici. 
@@ -50,11 +51,17 @@ struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache)
     /* On cherche d'abord un bloc invalide */
     if ((pbh = Get_Free_Block(pcache)) != NULL) {
 	Cache_List_Append(((struct Cache_List *)((pcache)->pstrategy)), pbh);
+	if (demo1++<5){
+		printf("bloc invalide : %p \n ", pbh);
+	}
 	return pbh;
     }
 
     /* Sinon on prend le bloc le plus vieux*/
     pbh=Cache_List_Remove_First(((struct Cache_List *)((pcache)->pstrategy)));
+	if (demo2++<5){
+		printf("bloc valide : %p \n ", pbh );
+	}
     Cache_List_Append(((struct Cache_List *)((pcache)->pstrategy)), pbh);
     return pbh;
 }
