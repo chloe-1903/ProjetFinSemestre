@@ -11,7 +11,6 @@
 #include "low_cache.h"
 #include "time.h"
 
-struct Cache_List *cache_list;
 
 /*!
  * FIFO : pas grand chose à faire ici. 
@@ -22,11 +21,7 @@ struct Cache_List *cache_list;
  */
 void *Strategy_Create(struct Cache *pcache) 
 {
-   // cache_list= Cache_List_Create();
-   
-    cache_list =  (struct Cache_List *)((pcache)->pstrategy);
-
-    return cache_list;
+    return Cache_List_Create();
 }
 
 /*!
@@ -34,7 +29,7 @@ void *Strategy_Create(struct Cache *pcache)
  */
 void Strategy_Close(struct Cache *pcache)
 {
-    Cache_List_Delete(cache_list);
+    Cache_List_Delete(((struct Cache_List *)((pcache)->pstrategy)));
 }
 
 /*!
@@ -42,8 +37,7 @@ void Strategy_Close(struct Cache *pcache)
  */
 void Strategy_Invalidate(struct Cache *pcache)
 {
-    Cache_Invalidate(pcache);
-    Cache_List_Clear(cache_list);
+    Cache_List_Clear(((struct Cache_List *)((pcache)->pstrategy)));
 }
 
 /*! 
@@ -55,13 +49,13 @@ struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache)
 
     /* On cherche d'abord un bloc invalide */
     if ((pbh = Get_Free_Block(pcache)) != NULL) {
-	Cache_List_Append(cache_list, pbh);
+	Cache_List_Append(((struct Cache_List *)((pcache)->pstrategy)), pbh);
 	return pbh;
     }
 
     /* Sinon on prend le bloc le plus vieux*/
-    pbh=Cache_List_Remove_First(cache_list);
-    Cache_List_Append(cache_list, pbh);
+    pbh=Cache_List_Remove_First(((struct Cache_List *)((pcache)->pstrategy)));
+    Cache_List_Append(((struct Cache_List *)((pcache)->pstrategy)), pbh);
     return pbh;
 }
 
