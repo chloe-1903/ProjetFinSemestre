@@ -65,24 +65,13 @@ struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache)
     Cache_List_Append(((struct Cache_List *)((pcache)->pstrategy)), pbh);
     return pbh;
 }
-/*
-void affiche(struct Cache *pcache){
-  struct Cache_List *P= (struct Cache_List *)((pcache)->pstrategy);
-  while (P !=NULL)
-    {
-      printf("%d \t",P->pheader->ibfile);
-      P = P->next;
-    }
-}
-*/
 
 /*!
  * RAND : Rien à faire ici.
  */
 void Strategy_Read(struct Cache *pcache, struct Cache_Block_Header *pbh) 
 {
-	Cache_List_Move_To_End(((struct Cache_List *)((pcache)->pstrategy)), pbh);
-	//printf("Lecture de %p \n", pbh);
+	
 }  
 
 /*!
@@ -90,8 +79,7 @@ void Strategy_Read(struct Cache *pcache, struct Cache_Block_Header *pbh)
  */  
 void Strategy_Write(struct Cache *pcache, struct Cache_Block_Header *pbh)
 {
-	Cache_List_Move_To_End(((struct Cache_List *)((pcache)->pstrategy)), pbh);
-	//printf("Ecriture de %p \n", pbh);
+	
 } 
 
 char *Strategy_Name()
