@@ -22,7 +22,6 @@ int n_acces=0; //nombre d'accès depuis le dernier dereferencement
  */
 void *Strategy_Create(struct Cache *pcache) 
 {
-    return Cache_List_Create();
 }
 
 /*!
@@ -30,7 +29,6 @@ void *Strategy_Create(struct Cache *pcache)
  */
 void Strategy_Close(struct Cache *pcache)
 {
-    Cache_List_Delete(((struct Cache_List *)((pcache)->pstrategy)));
 }
 
 /*!
@@ -38,7 +36,7 @@ void Strategy_Close(struct Cache *pcache)
  */
 void Strategy_Invalidate(struct Cache *pcache)
 {
-    Cache_List_Clear(((struct Cache_List *)((pcache)->pstrategy)));
+	deref(pcache);
 }
 
 /*! 
@@ -47,7 +45,6 @@ void Strategy_Invalidate(struct Cache *pcache)
 struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache) 
 {
     struct Cache_Block_Header *pbh;
-    struct Cache_Block_Header p;
     int i, num_bloc;
     int min=4;
 
@@ -60,7 +57,7 @@ struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache)
     for (num_bloc = 0;  num_bloc < pcache->nblocks;  num_bloc++) {
 	if ( (i=2*pcache->headers[num_bloc].flags & REF+ pcache->headers[num_bloc].flags & MODIF) < min){
 		min=i;
-		p=pcache->headers[num_bloc];
+		pbh=&(pcache->headers[num_bloc]);
 	}
     }
     return pbh;		
@@ -71,13 +68,10 @@ struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache)
  */
 void Strategy_Read(struct Cache *pcache, struct Cache_Block_Header *pbh) 
 {
-    printf("Incrémentation\n");
+	//printf("Read %p \n", pbh);	
 	n_acces++;
-    printf("Deref\n");
 	deref(pcache);
-    printf("Opérateur chelou\n");
 	pbh->flags |= REF;
-    printf("Fini read");
 }  
 
 /*!
@@ -85,6 +79,7 @@ void Strategy_Read(struct Cache *pcache, struct Cache_Block_Header *pbh)
  */  
 void Strategy_Write(struct Cache *pcache, struct Cache_Block_Header *pbh)
 {
+	//printf("Write %p \n", pbh);
 	n_acces++;
 	deref(pcache);
 	//mettre M à 1?
@@ -92,14 +87,16 @@ void Strategy_Write(struct Cache *pcache, struct Cache_Block_Header *pbh)
 } 
 
 void deref(struct Cache *pcache){
-    printf("Début deref\n");
 	int num_bloc;
 	if (n_acces >= pcache->nderef){
-        printf("Dans la condition deref\n");
+       		//printf("Dans la condition deref\n");
 		n_acces=0;
-		for ( num_bloc = 0;  num_bloc < pcache->nblocks;  num_bloc++) 
-            printf("Parcours bloc %p", pcache->headers[num_bloc]);
+		//printf("Nb de blocs: %d" , pcache->nblocks);
+		for ( num_bloc = 0;  num_bloc < pcache->nblocks;  num_bloc++) {
+          		//printf("Parcours bloc %p", pcache->headers[num_bloc]);
 			pcache->headers[num_bloc].flags &= ~REF;
+		}
+		++pcache->instrument.n_deref;
 			
 	}
 	//incrémenter n_deref??
