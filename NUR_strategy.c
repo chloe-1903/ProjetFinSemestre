@@ -46,7 +46,7 @@ struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache)
 {
     struct Cache_Block_Header *pbh;
     int i, num_bloc;
-    int min=4;
+    int min= 4;
 
     /* On cherche d'abord un bloc invalide */
     if ((pbh = Get_Free_Block(pcache)) != NULL) {
@@ -54,11 +54,20 @@ struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache)
 	return pbh;
     }
 
-    for (num_bloc = 0;  num_bloc < pcache->nblocks;  num_bloc++) {
-	if ( (i=2*pcache->headers[num_bloc].flags & REF+ pcache->headers[num_bloc].flags & MODIF) < min){
-		min=i;
-		pbh=&(pcache->headers[num_bloc]);
-	}
+    for (num_bloc = 0; num_bloc < pcache->nblocks; ++num_bloc)
+    {       
+        // Calcul de rm
+        i = evaluate_RM(&pcache->headers[num_bloc]);
+        if (0 == i)
+            return &pcache->headers[num_bloc];
+        else
+        {
+            if (min > i)
+            {
+                min = i;
+                pbh = &pcache->headers[num_bloc];
+            }
+        }
     }
     return pbh;		
 }
@@ -101,6 +110,16 @@ void deref(struct Cache *pcache){
 	}
 	//incrémenter n_deref??
 }
+
+int evaluate_RM(struct Cache_Block_Header *bloc)
+{
+    int rm = 0;
+    if ((bloc->flags & REF) > 0) rm += 2;
+    if ((bloc->flags & MODIF) > 0) rm += 1;
+
+    return rm;
+}
+
 char *Strategy_Name()
 {
     return "NUR";
