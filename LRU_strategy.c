@@ -47,7 +47,7 @@ void Strategy_Invalidate(struct Cache *pcache)
 struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache) 
 {
     struct Cache_Block_Header *pbh;
-	affiche(pcache);
+	//affiche(pcache);
     /* On cherche d'abord un bloc invalide */
     if ((pbh = Get_Free_Block(pcache)) != NULL) {
 	Cache_List_Append(((struct Cache_List *)((pcache)->pstrategy)), pbh);
