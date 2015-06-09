@@ -71,9 +71,13 @@ struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache)
  */
 void Strategy_Read(struct Cache *pcache, struct Cache_Block_Header *pbh) 
 {
+    printf("Incrémentation\n");
 	n_acces++;
+    printf("Deref\n");
 	deref(pcache);
+    printf("Opérateur chelou\n");
 	pbh->flags |= REF;
+    printf("Fini read");
 }  
 
 /*!
@@ -88,10 +92,13 @@ void Strategy_Write(struct Cache *pcache, struct Cache_Block_Header *pbh)
 } 
 
 void deref(struct Cache *pcache){
+    printf("Début deref\n");
 	int num_bloc;
 	if (n_acces >= pcache->nderef){
+        printf("Dans la condition deref\n");
 		n_acces=0;
 		for ( num_bloc = 0;  num_bloc < pcache->nblocks;  num_bloc++) 
+            printf("Parcours bloc %p", pcache->headers[num_bloc]);
 			pcache->headers[num_bloc].flags &= ~REF;
 			
 	}
