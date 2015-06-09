@@ -11,7 +11,7 @@
 #include "low_cache.h"
 #include "time.h"
 
-int demo1, demo2; //Pour afficher les 5 premiers blocs et le 5 premiers blocs qu'on remplace (doivent être les mêmes) 
+int n_acces=0; //nombre d'accès depuis le dernier dereferencement
 
 /*!
  * FIFO : pas grand chose à faire ici. 
@@ -47,23 +47,23 @@ void Strategy_Invalidate(struct Cache *pcache)
 struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache) 
 {
     struct Cache_Block_Header *pbh;
-	affiche(pcache);
+    struct Cache_Block_Header p;
+    int i, num_bloc;
+    int min=4;
+
     /* On cherche d'abord un bloc invalide */
     if ((pbh = Get_Free_Block(pcache)) != NULL) {
-	Cache_List_Append(((struct Cache_List *)((pcache)->pstrategy)), pbh);
-	//if (demo1++<5){
-		//printf("bloc invalide : %p \n ", pbh);
-	//}
+	//mettre V à 1?
 	return pbh;
     }
 
-    /* Sinon on prend le bloc utilisé le moins récement*/
-    pbh=Cache_List_Remove_First(((struct Cache_List *)((pcache)->pstrategy)));
-	//if (demo2++<5){
-		//printf("bloc valide, on remplace: %p \n ", pbh );
-	//}
-    Cache_List_Append(((struct Cache_List *)((pcache)->pstrategy)), pbh);
-    return pbh;
+    for (num_bloc = 0;  num_bloc < pcache->nblocks;  num_bloc++) {
+	if ( (i=2*pcache->headers[num_bloc].flags & REF+ pcache->headers[num_bloc].flags & MODIF) < min){
+		min=i;
+		p=pcache->headers[num_bloc];
+	}
+    }
+    return pbh;		
 }
 
 /*!
@@ -71,7 +71,9 @@ struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache)
  */
 void Strategy_Read(struct Cache *pcache, struct Cache_Block_Header *pbh) 
 {
-	
+	n_acces++;
+	deref(pcache);
+	pbh->flags |= REF;
 }  
 
 /*!
@@ -79,10 +81,23 @@ void Strategy_Read(struct Cache *pcache, struct Cache_Block_Header *pbh)
  */  
 void Strategy_Write(struct Cache *pcache, struct Cache_Block_Header *pbh)
 {
-	
+	n_acces++;
+	deref(pcache);
+	//mettre M à 1?
+	pbh->flags |= REF;
 } 
 
+void deref(struct Cache *pcache){
+	int num_bloc;
+	if (n_acces >= pcache->nderef){
+		n_acces=0;
+		for ( num_bloc = 0;  num_bloc < pcache->nblocks;  num_bloc++) 
+			pcache->headers[num_bloc].flags &= ~REF;
+			
+	}
+	//incrémenter n_deref??
+}
 char *Strategy_Name()
 {
-    return "LRU";
+    return "NUR";
 }
