@@ -45,20 +45,21 @@ void Strategy_Invalidate(struct Cache *pcache)
 struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache) 
 {
     struct Cache_Block_Header *pbh;
-    int i, num_bloc;
+    int num_bloc;
     int min= 4;
 
     /* On cherche d'abord un bloc invalide */
     if ((pbh = Get_Free_Block(pcache)) != NULL) {
-	//mettre V à 1?
 	return pbh;
     }
 
     for (num_bloc = 0; num_bloc < pcache->nblocks; ++num_bloc)
-    {       
-        // Calcul de rm
-        i = evaluate_RM(&pcache->headers[num_bloc]);
-        if (0 == i)
+    {    
+	int i=0;   
+    	if ((pcache->headers[num_bloc].flags & REF) > 0) i += 2;
+   	if ((pcache->headers[num_bloc].flags & MODIF) > 0) i += 1;
+
+        if (i==0)
             return &pcache->headers[num_bloc];
         else
         {
