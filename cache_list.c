@@ -115,6 +115,7 @@ void Cache_List_Move_To_Begin(struct Cache_List *list,
 /*! Afficher la cache liste entière */
 void Cache_List_Print(struct Cache_List *list) {
     while (cur->next) {
+        printf("Header : %p\n",cur->pheader);
         cur = cur->next;
     }
 }
