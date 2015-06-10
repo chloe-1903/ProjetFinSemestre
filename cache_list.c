@@ -71,12 +71,34 @@ struct Cache_Block_Header *Cache_List_Remove_Last(struct Cache_List *list){
 struct Cache_Block_Header *Cache_List_Remove(struct Cache_List *list,
                                              struct Cache_Block_Header *pbh){
     struct Cache_List *cur=list;
-    while (cur=cur->next) {
+    while (cur) {
+        //printf("Current: %p \n", cur);
         if (cur->pheader == pbh) { 
-            (cur->next)->prev = cur->prev;
-            (cur->prev)->next = cur->next;
-            return cur;
+            if (cur->prev) { // Si il a un précédent
+                if(cur->next) { // Et qu'il a un suivant
+                    ((cur->next)->prev) = cur->prev; // On peut le faire : CAS 4
+                    ((cur->prev)->next) = cur->next; 
+                } else { // Si il n'a pas de suivant (donc est le dernier de la liste) : CAS 2
+                    ((cur->prev)->next) = NULL; // Le suivant de prev sera NULL
+                }
+                free(cur);
+                return pbh;
+            } else { // Si il n'a pas de précédent
+                 if (cur->next) { // Si il a un suivant : CAS 1
+                    ((cur->next)->prev) = NULL;
+                    list = cur->next;
+                    free(cur);
+                    printf("LISTE : %p\n", list);
+                    Cache_List_Print(list);
+                    return pbh;
+                } else {
+                    cur->pheader = NULL; //On met son header à null
+                    return pbh;
+                }
+            }
         }
+        if (cur->next) cur = cur->next;
+        else break;
     }
     // si on a pas trouvé l'élement
     return NULL;
@@ -114,6 +136,10 @@ void Cache_List_Move_To_Begin(struct Cache_List *list,
 
 /*! Afficher la cache liste entière */
 void Cache_List_Print(struct Cache_List *list) {
+    if (Cache_List_Is_Empty(list)) {
+        printf("Elle est vide !\n");
+        return;
+    }
     struct Cache_List *cur=list;
     while (cur->next) {
         printf("%p\n",cur);
