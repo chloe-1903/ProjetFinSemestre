@@ -20,7 +20,7 @@ struct Cache *Cache_Create(const char *fic, unsigned nblocks, unsigned nrecords,
 	
 }
 
-int Cache_Sync(struct Cache *pcache){
+Cache_Error Cache_Sync(struct Cache *pcache){
 	for (int i =0; i<pcache->nblocks; i++){
 		if ((pcache->headers[i].flags & MODIF) > 0){
 			fseek(char *fic,DADDR(pcache, ibfile),SEEK_SET);
@@ -28,13 +28,14 @@ int Cache_Sync(struct Cache *pcache){
 		}
 		pcache->headers[i].flags &= ~MODIF;
 	}
-
+	return CACHE_OK;
 }
-int Cache_Close(struct Cache *pcache){
+
+Cache_Error Cache_Close(struct Cache *pcache){
 	Cache_sync(pcache);
 	close(pcache->fp);
 	free(pcache);
-
+	return CACHE_OK;
 }
 
 int Cache_Invalidate(struct Cache *pcache){
