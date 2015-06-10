@@ -72,7 +72,7 @@ void Cache_List_Prepend(struct Cache_List *list, struct Cache_Block_Header *pbh)
     element_to_add->next     = first;      // le précédent du nouvel élément sera 
     first->prev->next = element_to_add;    // le dernier a son next sur le nouvel élément
     element_to_add->prev = first->prev;    // le précédent du nouveau est le dernier
-    first->prev      = element_to_add ;     // le précédent de l'ancier premier est le nouveau
+    first->prev = element_to_add ;     // le précédent de l'ancier premier est le nouveau
 }
 
 
@@ -83,27 +83,47 @@ void Cache_List_Prepend(struct Cache_List *list, struct Cache_Block_Header *pbh)
 /*! Retrait du premier élément */
 struct Cache_Block_Header *Cache_List_Remove_First(struct Cache_List *list){
     struct Cache_List *first=list;
-    struct Cache_Block_Header *pbh= first->pheader;
-    struct Cache_List *second= first->next;
+    struct Cache_List *second;
+    if (first->next) {
+        second = list->next;
+    } else {
+        first->pheader = NULL;
+        return first->pheader;
+    }
 
-    second->prev = first->prev;
-    (first->prev)-> next = second;
-    list= second;
-    free(first);
-    return pbh;
+    first->pheader= second->pheader;
+    if (second->next) {
+        first->next = second->next;
+        second->next->prev = first;
+    } else {
+        first->next = first;
+    }
+    free(second);
+    //printf("%p , header : %p\n",first,first->pheader); // Montre que le header NULL prend une valeur au hasard
+    return first->pheader;
 }
 
 /*! Retrait du dernier élément */
 struct Cache_Block_Header *Cache_List_Remove_Last(struct Cache_List *list){
-    struct Cache_List *cur=list;
-    while (cur->next!=list) cur = cur->next;
+    struct Cache_List *first=list;
+    struct Cache_List *last;
+    if (first->prev) {
+        last = list->prev;
+    } else {
+        first->pheader = NULL;
+        return first->pheader;
+    }
 
-    struct Cache_Block_Header *pbh= cur->pheader;
-    list->prev= cur;
-    (cur->prev)->next=list;
-    free(cur);
+    if (last->prev) {
+        last->prev->next = first;
+        first->prev = last->prev;
+    } else {
+        first->prev = first;
+    }
+    free(last);
 
-    return pbh;
+    return first->pheader;
+    
 }
 
 
@@ -190,7 +210,7 @@ void Cache_List_Move_To_Begin(struct Cache_List *list,
 /*! Afficher la cache liste entière */
 void Cache_List_Print(struct Cache_List *list) {
     
-    if (list == NULL) { printf("Cette liste est NULL\n"); }
+    if (list->pheader == NULL) { printf("Cette liste est NULL\n"); } else {
     
     struct Cache_List *tmp = list;
     while (tmp->next != list) {
@@ -198,4 +218,5 @@ void Cache_List_Print(struct Cache_List *list) {
         tmp = tmp->next;
     }
     printf("%p , header : %p\n",tmp,tmp->pheader);
+}
 }

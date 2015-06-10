@@ -34,6 +34,42 @@ int main(int argc, char const *argv[])
     printf("C'est parti pour REMOVE FIRST\n");
     Cache_List_Remove_First(cache_list);
     Cache_List_Print(cache_list);
+    printf("C'est parti pour un deuxième REMOVE FIRST\n");
+
+    Cache_List_Remove_First(cache_list);
+    Cache_List_Print(cache_list);
+/*     printf("C'est parti pour un troisième REMOVE FIRST\n");
+
+    Cache_List_Remove_First(cache_list);
+    Cache_List_Print(cache_list);
+    printf("C'est parti pour un quatrième REMOVE FIRST\n");
+
+    Cache_List_Remove_First(cache_list);
+    Cache_List_Print(cache_list);
+    printf("C'est parti pour un cinquième REMOVE FIRST\n");
+
+    Cache_List_Remove_First(cache_list);
+    Cache_List_Print(cache_list);
+*/
+    printf("C'est parti pour REMOVE LAST\n");
+    Cache_List_Remove_Last(cache_list);
+    Cache_List_Print(cache_list);
+    printf("C'est parti pour un deuxième REMOVE LAST\n");
+
+    Cache_List_Remove_Last(cache_list);
+    Cache_List_Print(cache_list);
+    //printf("C'est parti pour un troisième REMOVE LAST\n");
+
+    //Cache_List_Remove_Last(cache_list);
+    //Cache_List_Print(cache_list);
+    //printf("C'est parti pour un quatrième REMOVE LAST\n");
+
+    //Cache_List_Remove_Last(cache_list);
+    //Cache_List_Print(cache_list);
+    //printf("C'est parti pour un cinquième REMOVE LAST\n");
+
+    //Cache_List_Remove_Last(cache_list);
+    //Cache_List_Print(cache_list);
     
     
     //~ Cache_List_Append(cache_list, headerTest);
