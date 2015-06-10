@@ -25,7 +25,7 @@ void Cache_List_Delete(struct Cache_List *list){
 }
 
 /*! Insertion d'un élément à la fin */
-void Cache_List_Append(struct Cache_List *list, struct Cache_Block_Header *pbh){
+void Cache_List_Append(struct Cache_List *list, struct Cache_Block_Header *pbh) {
     if (Cache_List_Is_Empty(list)) {
         list->pheader = pbh;
         return;
@@ -89,7 +89,7 @@ void Cache_List_Clear(struct Cache_List *list) {
 
 /*! Test de liste vide */
 bool Cache_List_Is_Empty(struct Cache_List *list) {
-    return (list->next==NULL && list->pheader==NULL);
+    return (!list->next && !list->pheader);
 }
 
 /*! Transférer un élément à la fin */
@@ -106,6 +106,15 @@ void Cache_List_Move_To_End(struct Cache_List *list,
 
 /*! Transférer un élément  au début */
 void Cache_List_Move_To_Begin(struct Cache_List *list,
-                              struct Cache_Block_Header *pbh){
+                              struct Cache_Block_Header *pbh) {
+    struct Cache_List *element_to_move = Cache_List_Remove(list,pbh);    
+    list->prev = element_to_move;
+    element_to_move->next=list;
+}
 
+/*! Afficher la cache liste entière */
+void Cache_List_Print(struct Cache_List *list) {
+    while (cur->next) {
+        cur = cur->next;
+    }
 }
