@@ -5,7 +5,9 @@
 /*! Création d'une liste de blocs */
 struct Cache_List *Cache_List_Create(){
 	struct Cache_List *cache_list= (struct Cache_List*)malloc(sizeof(struct Cache_List));//+1?
-	cache_list->prev=cache_list->next = NULL;
+
+	cache_list->prev= NULL;
+	cache_list->next= NULL;
 	cache_list->pheader=NULL;
 	return cache_list; 
 }
@@ -29,7 +31,6 @@ void Cache_List_Append(struct Cache_List *list, struct Cache_Block_Header *pbh){
         return;
     }
 	struct Cache_List *cur=list;
-    // on va jusqu'à la fin de la liste
 	while (cur->next) cur = cur->next;
 	struct Cache_List *element_to_add=Cache_List_Create();
 	element_to_add->prev=cur;
