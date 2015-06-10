@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdlib.h>
 #include "cache_list.h"
 
 /*! Création d'une liste de blocs */
@@ -29,26 +30,35 @@ void Cache_List_Append(struct Cache_List *list, struct Cache_Block_Header *pbh){
 	struct Cache_List *element_to_add=Cache_List_Create();
 	element_to_add->prev=cur;
 	element_to_add->next=NULL;
-	element_to_add->header=pbh;
+	element_to_add->pheader=pbh;
 	cur->next=element_to_add;
 }
 
 /*! Insertion d'un élément au début*/
 void Cache_List_Prepend(struct Cache_List *list, struct Cache_Block_Header *pbh){
-	struct Cache_List *element_to_add;
+	struct Cache_List *element_to_add=Cache_List_Create();;
 	element_to_add->prev=NULL;
 	element_to_add->next=list;//ici, bug potentiel
-	element_to_add->header=pbh;
+	element_to_add->pheader=pbh;
+    
+    list->prev = element_to_add;
 }
 
 /*! Retrait du premier élément */
 struct Cache_Block_Header *Cache_List_Remove_First(struct Cache_List *list){
-
+    struct Cache_List *cur=list;
+    struct Cache_List *second=cur->next;
+    second->prec = NULL;
+    //free(cur);
+    return cur;
 }
 
 /*! Retrait du dernier élément */
 struct Cache_Block_Header *Cache_List_Remove_Last(struct Cache_List *list){
-
+    struct Cache_List *cur=list;
+    while (cur=cur->next);
+    struct Cache_List *before_last=cur->prev;
+    
 }
 
 /*! Retrait d'un élément quelconque */
