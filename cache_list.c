@@ -83,7 +83,10 @@ void Cache_List_Prepend(struct Cache_List *list, struct Cache_Block_Header *pbh)
 
 /*! Retrait du premier élément */
 struct Cache_Block_Header *Cache_List_Remove_First(struct Cache_List *list){
-    if (list->next != list) {
+    if(Cache_List_Is_Empty(list)) {
+        printf("Pas de remove first sur une liste vide\n");
+        return;
+    }
         struct Cache_List *first=list;
         struct Cache_List *second;
         if (first->next) {
@@ -103,13 +106,14 @@ struct Cache_Block_Header *Cache_List_Remove_First(struct Cache_List *list){
         free(second);
         //printf("%p , header : %p\n",first,first->pheader); // Montre que le header NULL prend une valeur au hasard
         return first->pheader;
-    }
-    return Cache_List_Remove(list, list->pheader);
 }
 
 /*! Retrait du dernier élément */
 struct Cache_Block_Header *Cache_List_Remove_Last(struct Cache_List *list){
-    if (list->prev != list) {
+    if(Cache_List_Is_Empty(list)) {
+        printf("Pas de remove last sur une liste vide\n");
+        return;
+    }
         struct Cache_List *first=list;
         struct Cache_List *last;
         if (first->prev) {
@@ -128,8 +132,6 @@ struct Cache_Block_Header *Cache_List_Remove_Last(struct Cache_List *list){
         free(last);
 
         return first->pheader;
-}
-    return Cache_List_Remove(list, list->pheader);
     
 }
 
