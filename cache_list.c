@@ -114,24 +114,21 @@ struct Cache_Block_Header *Cache_List_Remove_Last(struct Cache_List *list){
         printf("Pas de remove last sur une liste vide\n");
         return;
     }
-        struct Cache_List *first=list;
-        struct Cache_List *last;
-        if (first->prev!=first) {
-            last = list->prev;
-        } else {
-            first->pheader = NULL;
-            return first->pheader;
-        }
-
-        if (last->prev!=first) {
-            last->prev->next = first;
-            first->prev = last->prev;
-        } else {
-            first->prev = first;
-        }
-        free(last);
-
-        return first->pheader;
+        printf("remove last\n");
+	//printf("ListPrev %p \n", list->prev);
+	//tester si empty
+	if (list->prev != list){
+	    struct Cache_List *cur=list;
+	    cur = list->prev;
+	    struct Cache_Block_Header *pbh= cur->pheader;
+	    list->prev= cur->prev;
+	    (cur->prev)->next=list;
+	    free(cur);
+	    return pbh;
+	}
+	//Si list->prev=list, l'élément est seul, on le supprime avec cache list remove
+	//printf("blabla");
+    return Cache_List_Remove(list, list->pheader);
     
 }
 
@@ -139,11 +136,10 @@ struct Cache_Block_Header *Cache_List_Remove_Last(struct Cache_List *list){
 /*! Retrait d'un élément quelconque */
 struct Cache_Block_Header *Cache_List_Remove(struct Cache_List *list,
                                              struct Cache_Block_Header *pbh){
+    if (list->prev->pheader== pbh && list->prev!=list){ return Cache_List_Remove_Last(list); }// Si l'élément à supprimer est à la fin (et n'est pas le seul de la liste)
     struct Cache_List *cur=list;
-    printf("Je rentre");
     while (cur->next!=list){
     if (cur-> pheader == pbh){
-        printf("J'ai trouvé celui à sup, son header: %p \n", cur->pheader);
         if (cur==list) {
             return Cache_List_Remove_First(list);//Si c'est le premier element OK
         }
@@ -153,26 +149,22 @@ struct Cache_Block_Header *Cache_List_Remove(struct Cache_List *list,
             (cur->prev)->next=cur->next;
             (cur->next)->prev=cur->prev;
             free(cur);
-            printf("J'ai sup le header remove \n");
             return header;
         }
     }
     cur = cur->next;
     }
-	printf("pbh: %p pheader: %p", pbh, cur->pheader);
     if (cur->pheader == pbh){
     //Soit c'est il est seul dans la liste OK
     	if (cur->prev=list && cur==list){
-		printf("Cest le seul! \n");
-		printf("cur prev: %p, list : %p \n  ", cur->prev, list);
 		list->pheader=NULL;
 		return NULL;
 	    }
-	    //Soit c'est le dernier
-	    else { 
-		printf("C'est le dernier!"); 
+	    //Soit c'est le dernier: Cas testé au début (car erreur sinon) mais devrait être testé ici
+	    /*else { 
+		printf("C'est le dernier!\n"); 
 		return Cache_List_Remove_Last(list);
-	    }
+	    }*/
     }
     //Si on ne l'a pas trouvé OK
     return NULL;
