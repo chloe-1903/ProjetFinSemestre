@@ -140,11 +140,12 @@ struct Cache_Block_Header *Cache_List_Remove_Last(struct Cache_List *list){
 struct Cache_Block_Header *Cache_List_Remove(struct Cache_List *list,
                                              struct Cache_Block_Header *pbh){
     struct Cache_List *cur=list;
+    printf("Je rentre");
     while (cur->next!=list){
     if (cur-> pheader == pbh){
         printf("J'ai trouvé celui à sup, son header: %p \n", cur->pheader);
         if (cur==list) {
-            return Cache_List_Remove_First(list);//Si c'est le premier element 
+            return Cache_List_Remove_First(list);//Si c'est le premier element OK
         }
         //S'il est au milieu OK
         else {
@@ -158,16 +159,20 @@ struct Cache_Block_Header *Cache_List_Remove(struct Cache_List *list,
     }
     cur = cur->next;
     }
-    if (cur-> pheader == pbh){
+	printf("pbh: %p pheader: %p", pbh, cur->pheader);
+    if (cur->pheader == pbh){
     //Soit c'est il est seul dans la liste OK
-    if (cur->prev=list && cur==list){
-        printf("Cest le seul! \n");
-        printf("cur prev: %p, list : %p \n  ", cur->prev, list);
-        list->pheader=NULL;
-        return NULL;
-    }
-    //Soit c'est le dernier
-    else return Cache_List_Remove_Last(list);
+    	if (cur->prev=list && cur==list){
+		printf("Cest le seul! \n");
+		printf("cur prev: %p, list : %p \n  ", cur->prev, list);
+		list->pheader=NULL;
+		return NULL;
+	    }
+	    //Soit c'est le dernier
+	    else { 
+		printf("C'est le dernier!"); 
+		return Cache_List_Remove_Last(list);
+	    }
     }
     //Si on ne l'a pas trouvé OK
     return NULL;
