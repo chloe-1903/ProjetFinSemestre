@@ -22,7 +22,7 @@ struct Cache_Block_Header* create_Blocks(struct Cache* pcache){
 *crée une nouvelle cache 
 **/
 struct Cache *Cache_Create(const char *fic, unsigned nblocks, unsigned nrecords,size_t recordsz, unsigned nderef){
-	cache =malloc(sizeof(struct Cache));
+	struct Cache *cache =malloc(sizeof(struct Cache));
 //Ouvre le fichier FIC - et le crée si ça n'existe pas encore.
 	if( (file = fopen(fic, "r+b")) == NULL)
 	file = fopen(fic, "w+b");
@@ -36,8 +36,8 @@ struct Cache *Cache_Create(const char *fic, unsigned nblocks, unsigned nrecords,
 	cache->instrument.n_reads = 0;
     cache->instrument.n_writes = 0; 
 	cache->instrument.n_hits = 0;
-	pstrategy = Strategy_Create(cache);
-	pfree =Get_Free_Block(cache);
+	cache->pstrategy = Strategy_Create(cache);
+	cache->pfree = Get_Free_Block(cache); //1er bloc?
 	cache->headers=create_block(cache);
 	return cache;
 }
@@ -64,7 +64,7 @@ Cache_Error Cache_Close(struct Cache *pcache){
 
 	Cache_sync(pcache);
 //fermer ce qu'il faut fermer 
-	close(pcache->fp);
+	fclose(pcache->fp);//ferme le fichier
 	Strategy_Close(pcache->pstrategy);
 //free tout les struct
 	free(pcache);
