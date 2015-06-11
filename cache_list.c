@@ -176,29 +176,40 @@ void Cache_List_Clear(struct Cache_List *list) {
     list->next = NULL; // lol
 }
 
+
+
+
 /*! Test de liste vide */
 bool Cache_List_Is_Empty(struct Cache_List *list) {    
     return (list->next==list && list->prev==list && !list->pheader);
 }
 
+
+
+
 /*! Transférer un élément à la fin */
 void Cache_List_Move_To_End(struct Cache_List *list,
                             struct Cache_Block_Header *pbh) {
-    struct Cache_List *cur=list;
-    struct Cache_List *element_to_move = Cache_List_Remove(list,pbh);
-    if (element_to_move) {
-        while (cur->next) cur = cur->next;
-        cur->next = element_to_move;
-        element_to_move->prev = cur;
-    }                      
+    if (Cache_List_Is_Empty(list) || (list->next==list && list->prev==list)) /* Rien à faire ici */ return;
+      
+    if (!Cache_List_Remove(list,pbh)) {
+        Cache_List_Append(list,pbh);
+    } else {
+        printf("Element non trouvé (end)\n");
+    }                    
 }
 
 /*! Transférer un élément  au début */
 void Cache_List_Move_To_Begin(struct Cache_List *list,
                               struct Cache_Block_Header *pbh) {
-    struct Cache_List *element_to_move = Cache_List_Remove(list,pbh);    
-    list->prev = element_to_move;
-    element_to_move->next=list;
+                                  
+    if (Cache_List_Is_Empty(list) || (list->next==list && list->prev==list)) /* Rien à faire ici */ return;
+      
+    if (!Cache_List_Remove(list,pbh)) {
+        Cache_List_Prepend(list,pbh);
+    } else {
+        printf("Element non trouvé (begin)\n");
+    }
 }
 
 
