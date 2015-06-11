@@ -59,9 +59,13 @@ void Cache_List_Append(struct Cache_List *list, struct Cache_Block_Header *pbh) 
 
 /*! Insertion d'un élément au début*/
 void Cache_List_Prepend(struct Cache_List *list, struct Cache_Block_Header *pbh){
+    if (Cache_List_Is_Empty(list)){
+    list->pheader=pbh;
+    return;
+    }
     struct Cache_List *element_to_add = Cache_List_Create(); // on crée un nouvel élément
 
-    element_to_add->next = list->next;
+    element_to_add->next = list->next;//?? on fait element_to_add->next = first; après, sert à qqch?
     element_to_add->prev = list;
     element_to_add->pheader = list->pheader; // on met le header du nouvel élément à pbh
     
@@ -69,12 +73,9 @@ void Cache_List_Prepend(struct Cache_List *list, struct Cache_Block_Header *pbh)
 
     struct Cache_List *first = list; // on récupère le second élément de la liste
 
-    element_to_add->next     = first;      // le précédent du nouvel élément sera 
-    first->prev->next = element_to_add;    // le dernier a son next sur le nouvel élément
-    element_to_add->prev = first->prev;    // le précédent du nouveau est le dernier
-    first->prev = element_to_add ;     // le précédent de l'ancier premier est le nouveau
+    first->next->prev = element_to_add;    // le dernier a son next sur le nouvel élément
+    first->next=element_to_add;     // le précédent du nouvel élément sera 
 }
-
 
 
 
@@ -82,98 +83,94 @@ void Cache_List_Prepend(struct Cache_List *list, struct Cache_Block_Header *pbh)
 
 /*! Retrait du premier élément */
 struct Cache_Block_Header *Cache_List_Remove_First(struct Cache_List *list){
-    struct Cache_List *first=list;
-    struct Cache_List *second;
-    if (first->next) {
-        second = list->next;
-    } else {
-        first->pheader = NULL;
+    if (list->next != list) {
+        struct Cache_List *first=list;
+        struct Cache_List *second;
+        if (first->next) {
+            second = list->next;
+        } else {
+            first->pheader = NULL;
+            return first->pheader;
+        }
+
+        first->pheader= second->pheader;
+        if (second->next) {
+            first->next = second->next;
+            second->next->prev = first;
+        } else {
+            first->next = first;
+        }
+        free(second);
+        //printf("%p , header : %p\n",first,first->pheader); // Montre que le header NULL prend une valeur au hasard
         return first->pheader;
     }
-
-    first->pheader= second->pheader;
-    if (second->next) {
-        first->next = second->next;
-        second->next->prev = first;
-    } else {
-        first->next = first;
-    }
-    free(second);
-    //printf("%p , header : %p\n",first,first->pheader); // Montre que le header NULL prend une valeur au hasard
-    return first->pheader;
+    return Cache_List_Remove(list, list->pheader);
 }
 
 /*! Retrait du dernier élément */
 struct Cache_Block_Header *Cache_List_Remove_Last(struct Cache_List *list){
-    struct Cache_List *first=list;
-    struct Cache_List *last;
-    if (first->prev) {
-        last = list->prev;
-    } else {
-        first->pheader = NULL;
+    if (list->prev != list) {
+        struct Cache_List *first=list;
+        struct Cache_List *last;
+        if (first->prev) {
+            last = list->prev;
+        } else {
+            first->pheader = NULL;
+            return first->pheader;
+        }
+
+        if (last->prev) {
+            last->prev->next = first;
+            first->prev = last->prev;
+        } else {
+            first->prev = first;
+        }
+        free(last);
+
         return first->pheader;
-    }
-
-    if (last->prev) {
-        last->prev->next = first;
-        first->prev = last->prev;
-    } else {
-        first->prev = first;
-    }
-    free(last);
-
-    return first->pheader;
+}
+    return Cache_List_Remove(list, list->pheader);
     
 }
-
-
-
-
-
-
 
 
 /*! Retrait d'un élément quelconque */
 struct Cache_Block_Header *Cache_List_Remove(struct Cache_List *list,
                                              struct Cache_Block_Header *pbh){
     struct Cache_List *cur=list;
-    while (cur) {
-        if (cur->pheader == pbh) {
-            if (cur->prev) { // Si il a un précédent
-                if (cur->next) { // Et qu'il a un suivant
-                    printf("J'ai modifié un élement qui a un précédent et un suivant\n");
-                    ((cur->next)->prev) = cur->prev;
-                    ((cur->prev)->next) = cur->next; 
-                } else { // Si il n'a pas de suivant
-                    printf("J'ai modifié un élement qui a un précédent mais pas de suivant\n");
-                    ((cur->prev)->next) = NULL; // Le suivant de prev sera NULL
-                }
-                free(cur);
-                cur->pheader = NULL; //On met son header à null
-                return pbh;
-            } else { // Si il n'a pas de précédent
-                if (cur->next) { // Si il a un suivant : CAS 1
-                    printf("J'ai modifié un élement qui n'a pas de précédent mais a un suivant\n");
-                    ((cur->next)->prev) = NULL;
-                    
-                } else {
-                    printf("J'ai modifié un élement qui a ni précédent ni suivant\n");
-                    list->prev = NULL;
-                    list->next = NULL;
-                }
-                cur->pheader = NULL; //On met son header à null
-                free(cur);
-                /**list=cur->next;*/
-                
-                return pbh;
-            }
+    while (cur->next!=list){
+    if (cur-> pheader == pbh){
+        printf("J'ai trouvé celui à sup, son header: %p \n", cur->pheader);
+        if (cur==list) {
+            return Cache_List_Remove_First(list);//Si c'est le premier element 
         }
-        if (cur->next) cur = cur->next;
-        else break;
+        //S'il est au milieu OK
+        else {
+            struct Cache_Block_Header *header= cur->pheader;
+            (cur->prev)->next=cur->next;
+            (cur->next)->prev=cur->prev;
+            free(cur);
+            printf("J'ai sup le header remove \n");
+            return header;
+        }
     }
-    // si on a pas trouvé l'élement
+    cur = cur->next;
+    }
+    if (cur-> pheader == pbh){
+    //Soit c'est il est seul dans la liste OK
+    if (cur->prev=list && cur==list){
+        printf("Cest le seul! \n");
+        printf("cur prev: %p, list : %p \n  ", cur->prev, list);
+        list->pheader=NULL;
+        return NULL;
+    }
+    //Soit c'est le dernier
+    else return Cache_List_Remove_Last(list);
+    }
+    //Si on ne l'a pas trouvé OK
     return NULL;
 }
+
 
 /*! Remise en l'état de liste vide */
 void Cache_List_Clear(struct Cache_List *list) {
