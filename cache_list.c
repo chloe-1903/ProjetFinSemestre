@@ -171,9 +171,19 @@ struct Cache_Block_Header *Cache_List_Remove(struct Cache_List *list,
 }
 
 
-/*! Remise en l'état de liste vide */
+    /*! Remise en l'état de liste vide */
 void Cache_List_Clear(struct Cache_List *list) {
-    list->next = NULL; // lol
+    struct Cache_List *bloc;
+    if (!Cache_List_Is_Empty(list)) {
+        for (bloc = list->next; bloc != list; bloc = bloc->next) {
+            bloc->pheader    = NULL; // On met le header à NULL
+            bloc->prev->next = bloc->next;  //le next du précédent devient le suivant de l'actuel
+            bloc->next->prev = bloc->prev;  // le précédent du next devient le précédent de l'actuel
+            free(bloc);                    //on free le bloc actuel
+        }
+    }
+    bloc->pheader = NULL;    
+}
 }
 
 
