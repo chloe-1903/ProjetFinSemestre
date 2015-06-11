@@ -89,7 +89,7 @@ struct Cache_Block_Header *Cache_List_Remove_First(struct Cache_List *list){
     }
         struct Cache_List *first=list;
         struct Cache_List *second;
-        if (first->next) {
+        if (first->next!=first) {
             second = list->next;
         } else {
             first->pheader = NULL;
@@ -97,7 +97,7 @@ struct Cache_Block_Header *Cache_List_Remove_First(struct Cache_List *list){
         }
 
         first->pheader= second->pheader;
-        if (second->next) {
+        if (second->next!=second) {
             first->next = second->next;
             second->next->prev = first;
         } else {
@@ -116,14 +116,14 @@ struct Cache_Block_Header *Cache_List_Remove_Last(struct Cache_List *list){
     }
         struct Cache_List *first=list;
         struct Cache_List *last;
-        if (first->prev) {
+        if (first->prev!=first) {
             last = list->prev;
         } else {
             first->pheader = NULL;
             return first->pheader;
         }
 
-        if (last->prev) {
+        if (last->prev!=first) {
             last->prev->next = first;
             first->prev = last->prev;
         } else {

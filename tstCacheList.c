@@ -21,44 +21,23 @@ int main(int argc, char const *argv[])
     //printf("Avant preprend : \n");
    //Cache_List_Print(cache_list);
     Cache_List_Prepend(cache_list, headerTest);
+    Cache_List_Prepend(cache_list, headerTest2);
     //Cache_List_Prepend(cache_list, headerTest2);
     //Cache_List_Append(cache_list, headerTest2);
     printf("Après les preprend : \n");
     Cache_List_Print(cache_list);
     
-    //~ printf("C'est parti pour delete\n");
-    //~ Cache_List_Delete(cache_list);
-    //~ Cache_List_Print(cache_list);
-    
-    //printf("C'est parti pour REMOVE\n");
-    //Cache_List_Remove(cache_list, headerTest2);
-    //Cache_List_Print(cache_list);
-    //printf("C'est parti pour REMOVE FIRST\n");
-    //Cache_List_Remove_First(cache_list);
-    //Cache_List_Print(cache_list);
-    //printf("C'est parti pour un deuxième REMOVE FIRST\n");
 
-    //Cache_List_Remove_First(cache_list);
-    //Cache_List_Print(cache_list);
-/*     printf("C'est parti pour un troisième REMOVE FIRST\n");
-
-    Cache_List_Remove_First(cache_list);
-    Cache_List_Print(cache_list);
-    printf("C'est parti pour un quatrième REMOVE FIRST\n");
-
-    Cache_List_Remove_First(cache_list);
-    Cache_List_Print(cache_list);
-    printf("C'est parti pour un cinquième REMOVE FIRST\n");
-
-    Cache_List_Remove_First(cache_list);
-    Cache_List_Print(cache_list);
-*/
     printf("C'est parti pour REMOVE LAST\n");
-    Cache_List_Remove_Last(cache_list);
+    Cache_List_Remove_First(cache_list);
     Cache_List_Print(cache_list);
     printf("C'est parti pour un deuxième REMOVE LAST\n");
 
     Cache_List_Remove_Last(cache_list);
+    Cache_List_Print(cache_list);
+
+	    printf("C'est parti pour REMOVE LAST\n");
+    Cache_List_Remove_First(cache_list);
     Cache_List_Print(cache_list);
    //printf("C'est parti pour un troisième REMOVE LAST\n");
 
