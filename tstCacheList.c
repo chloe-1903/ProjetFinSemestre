@@ -17,14 +17,14 @@ int main(int argc, char const *argv[])
     headerTest->data = NULL; 
     
     Cache_List_Prepend(cache_list, headerTest);
-    //Cache_List_Prepend(cache_list, headerTest);
+    Cache_List_Prepend(cache_list, headerTest);
     Cache_List_Prepend(cache_list, headerTest2);
     printf("Liste: \n");
     Cache_List_Print(cache_list);
     
 
-    printf("C'est parti pour MoveTo de  %p \n", headerTest);
-    Cache_List_Move_To_End(cache_list, headerTest);
+    printf("C'est parti pour DELETE de  %p \n", headerTest);
+    Cache_List_Delete(cache_list);
     Cache_List_Print(cache_list);
 
    //printf("C'est parti pour un troisième REMOVE LAST\n");

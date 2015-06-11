@@ -24,9 +24,9 @@ void Cache_List_Delete(struct Cache_List *list) {
             bloc->next->prev = bloc->prev;  // le précédent du next devient le précédent de l'actuel
             free(bloc);                    //on free le bloc actuel
         }
+	Cache_List_Remove(list, list->pheader);
     }
-    bloc->pheader = NULL; //? je sais pas si on doit le metttre à null avant de free
-    free(list);           // on free la list
+   // bloc->pheader = NULL; //? je sais pas si on doit le metttre à null avant de free
 }
 
 
@@ -184,9 +184,6 @@ void Cache_List_Clear(struct Cache_List *list) {
     }
     bloc->pheader = NULL;    
 }
-}
-
-
 
 
 /*! Test de liste vide */
@@ -227,8 +224,7 @@ void Cache_List_Move_To_Begin(struct Cache_List *list,
 
 /*! Afficher la cache liste entière */
 void Cache_List_Print(struct Cache_List *list) {
-    
-    if (list->pheader == NULL) { printf("Cette liste est NULL\n"); } else {
+    if (list->pheader == NULL) { printf("Cette liste est vide ou n'existe pas. \n"); } else {
     
     struct Cache_List *tmp = list;
     while (tmp->next != list) {
