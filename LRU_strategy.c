@@ -1,8 +1,7 @@
 /*!
- * \file FIFO_strategy.c
+ * \file LRU_strategy.c
  *
- * \brief  Stratégie de remplacement FIFO
- * 
+ * \brief  Stratégie de remplacement LRU (Least Recently Used)
  */
 
 #include <assert.h>
@@ -11,14 +10,12 @@
 #include "low_cache.h"
 #include "time.h"
 
-int demo1, demo2; //Pour afficher les 5 premiers blocs et le 5 premiers blocs qu'on remplace (doivent être les mêmes) 
+int demo1, demo2; //Pour afficher les 5 premiers blocs et les 5 premiers blocs qu'on remplace (doivent être les mêmes) 
 
 /*!
- * FIFO : pas grand chose à faire ici. 
+ * LRU : pas grand chose à faire ici. 
  *
- * En fait, nous initialisons le germe
- * (seed) du générateur aléatoire à quelque chose d'éminemment variable, pour
- * éviter d'avoir la même séquence à chque exécution...
+ * Simplement créer la Cache_List
  */
 void *Strategy_Create(struct Cache *pcache) 
 {
@@ -26,7 +23,7 @@ void *Strategy_Create(struct Cache *pcache)
 }
 
 /*!
- * FIFO : Rien à faire ici.
+ * LRU : Supprimer la liste.
  */
 void Strategy_Close(struct Cache *pcache)
 {
@@ -34,7 +31,7 @@ void Strategy_Close(struct Cache *pcache)
 }
 
 /*!
- * FIFO : Rien à faire ici.
+ * LRU : Met toute la liste à Invalidate
  */
 void Strategy_Invalidate(struct Cache *pcache)
 {
@@ -42,7 +39,7 @@ void Strategy_Invalidate(struct Cache *pcache)
 }
 
 /*! 
- * FIFO : On prend le premier bloc invalide. S'il n'y en a plus, on prend un bloc au hasard.
+ * LRU : On prend le premier bloc invalide si il y en a un.
  */
 struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache) 
 {
@@ -77,7 +74,7 @@ void affiche(struct Cache *pcache){
 */
 
 /*!
- * RAND : Rien à faire ici.
+ * LRU : On a lu un bloc, donc on le place en fin de liste.
  */
 void Strategy_Read(struct Cache *pcache, struct Cache_Block_Header *pbh) 
 {
@@ -86,7 +83,7 @@ void Strategy_Read(struct Cache *pcache, struct Cache_Block_Header *pbh)
 }  
 
 /*!
- * RAND : Rien à faire ici.
+ * LRU : On a écrit un bloc, donc on le place en fin de liste.
  */  
 void Strategy_Write(struct Cache *pcache, struct Cache_Block_Header *pbh)
 {
