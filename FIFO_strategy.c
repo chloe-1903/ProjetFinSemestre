@@ -68,14 +68,14 @@ struct Cache_Block_Header *Strategy_Replace_Block(struct Cache *pcache)
 
 
 /*!
- * RAND : Rien à faire ici.
+ * FIFO: Rien à faire ici.
  */
 void Strategy_Read(struct Cache *pcache, struct Cache_Block_Header *pbh) 
 {
 }  
 
 /*!
- * RAND : Rien à faire ici.
+ * FIFO : Rien à faire ici.
  */  
 void Strategy_Write(struct Cache *pcache, struct Cache_Block_Header *pbh)
 {
