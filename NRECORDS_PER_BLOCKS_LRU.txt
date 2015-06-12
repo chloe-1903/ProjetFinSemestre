@@ -1,0 +1,112 @@
+
+    N_RECORDS_PER_BLOCK = 10 (par défaut)
+
+
+Test_1 : boucle de lecture séquentielle : 
+	29999 lectures 30000 écritures 56999 succès (95.0 %)
+	60 syncs 0 déréférençages
+
+Test_2 : boucle écriture aléatoire : 
+	0 lectures 90000 écritures 871 succès (1.0 %)
+	91 syncs 0 déréférençages
+
+Test_3 : boucle lecture/écriture aléatoire : 
+	81002 lectures 9001 écritures 49044 succès (54.5 %)
+	92 syncs 0 déréférençages
+
+Test_4 : boucle lecture/écriture aléatoire avec localité : 
+	80986 lectures 9014 écritures 85469 succès (95.0 %)
+	91 syncs 0 déréférençages
+
+Test_5 : boucle lecture/écriture séquentielle avec localité : 
+	81000 lectures 9000 écritures 85963 succès (95.5 %)
+	91 syncs 0 déréférençages
+    
+
+
+
+
+    N_RECORDS_PER_BLOCK = 50
+    
+
+Test_1 : boucle de lecture séquentielle : 
+	29999 lectures 30000 écritures 59399 succès (99.0 %)
+	60 syncs 0 déréférençages
+
+Test_2 : boucle écriture aléatoire : 
+	0 lectures 90000 écritures 917 succès (1.0 %)
+	91 syncs 0 déréférençages
+
+Test_3 : boucle lecture/écriture aléatoire : 
+	81002 lectures 9001 écritures 53295 succès (59.2 %)
+	92 syncs 0 déréférençages
+
+Test_4 : boucle lecture/écriture aléatoire avec localité : 
+	80986 lectures 9014 écritures 82511 succès (91.7 %)
+	91 syncs 0 déréférençages
+
+Test_5 : boucle lecture/écriture séquentielle avec localité : 
+	81000 lectures 9000 écritures 88309 succès (98.1 %)
+	91 syncs 0 déréférençages
+
+
+
+
+
+    N_RECORDS_PER_BLOCK = 500 => Cache init error
+
+
+
+
+
+    N_RECORDS_PER_BLOCK = 100 
+
+
+Test_1 : boucle de lecture séquentielle : 
+	29999 lectures 30000 écritures 59699 succès (99.5 %)
+	60 syncs 0 déréférençages
+
+Test_2 : boucle écriture aléatoire : 
+	0 lectures 90000 écritures 914 succès (1.0 %)
+	91 syncs 0 déréférençages
+
+Test_3 : boucle lecture/écriture aléatoire : 
+	81002 lectures 9001 écritures 53855 succès (59.8 %)
+	92 syncs 0 déréférençages
+
+Test_4 : boucle lecture/écriture aléatoire avec localité : 
+	80986 lectures 9014 écritures 77380 succès (86.0 %)
+	91 syncs 0 déréférençages
+
+Test_5 : boucle lecture/écriture séquentielle avec localité : 
+	81000 lectures 9000 écritures 88773 succès (98.6 %)
+	91 syncs 0 déréférençages
+
+
+
+
+
+
+    N_RECORDS_PER_BLOCK = 1 
+
+
+Test_1 : boucle de lecture séquentielle : 
+	29999 lectures 30000 écritures 29999 succès (50.0 %)
+	60 syncs 0 déréférençages
+
+Test_2 : boucle écriture aléatoire : 
+	0 lectures 90000 écritures 905 succès (1.0 %)
+	91 syncs 0 déréférençages
+
+Test_3 : boucle lecture/écriture aléatoire : 
+	81002 lectures 9001 écritures 818 succès (0.9 %)
+	92 syncs 0 déréférençages
+
+Test_4 : boucle lecture/écriture aléatoire avec localité : 
+	80986 lectures 9014 écritures 61693 succès (68.5 %)
+	91 syncs 0 déréférençages
+
+Test_5 : boucle lecture/écriture séquentielle avec localité : 
+	81000 lectures 9000 écritures 61753 succès (68.6 %)
+	91 syncs 0 déréférençages
+

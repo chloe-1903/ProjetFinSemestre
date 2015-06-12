@@ -1,0 +1,80 @@
+
+    NDEREF = 5  
+
+
+Test_1 : boucle de lecture séquentielle : 
+	29999 lectures 30000 écritures 56999 succès (95.0 %)
+	60 syncs 11999 déréférençages
+
+Test_2 : boucle écriture aléatoire : 
+	0 lectures 90000 écritures 847 succès (0.9 %)
+	91 syncs 18000 déréférençages
+
+Test_3 : boucle lecture/écriture aléatoire : 
+	81002 lectures 9001 écritures 49073 succès (54.5 %)
+	92 syncs 18001 déréférençages
+
+Test_4 : boucle lecture/écriture aléatoire avec localité : 
+	80986 lectures 9014 écritures 53456 succès (59.4 %)
+	91 syncs 18000 déréférençages
+
+Test_5 : boucle lecture/écriture séquentielle avec localité : 
+	81000 lectures 9000 écritures 53958 succès (60.0 %)
+	91 syncs 18000 déréférençages
+    
+    
+    
+    
+    NDEREF = 100 (par défaut)
+    
+    
+Test_1 : boucle de lecture séquentielle : 
+	29999 lectures 30000 écritures 56999 succès (95.0 %)
+	60 syncs 599 déréférençages
+
+Test_2 : boucle écriture aléatoire : 
+	0 lectures 90000 écritures 865 succès (1.0 %)
+	91 syncs 900 déréférençages
+
+Test_3 : boucle lecture/écriture aléatoire : 
+	81002 lectures 9001 écritures 49042 succès (54.5 %)
+	92 syncs 901 déréférençages
+
+Test_4 : boucle lecture/écriture aléatoire avec localité : 
+	80986 lectures 9014 écritures 84649 succès (94.1 %)
+	91 syncs 900 déréférençages
+
+Test_5 : boucle lecture/écriture séquentielle avec localité : 
+	81000 lectures 9000 écritures 84688 succès (94.1 %)
+	91 syncs 900 déréférençages
+    
+    
+    
+    
+    
+    NDEREF = 1000
+    
+    
+Test_1 : boucle de lecture séquentielle : 
+	29999 lectures 30000 écritures 54660 succès (91.1 %)
+	60 syncs 59 déréférençages
+
+Test_2 : boucle écriture aléatoire : 
+	0 lectures 90000 écritures 894 succès (1.0 %)
+	91 syncs 90 déréférençages
+
+Test_3 : boucle lecture/écriture aléatoire : 
+	81002 lectures 9001 écritures 49070 succès (54.5 %)
+	92 syncs 91 déréférençages
+
+Test_4 : boucle lecture/écriture aléatoire avec localité : 
+	80986 lectures 9014 écritures 57522 succès (63.9 %)
+	91 syncs 90 déréférençages
+
+Test_5 : boucle lecture/écriture séquentielle avec localité : 
+	81000 lectures 9000 écritures 57570 succès (64.0 %)
+	91 syncs 90 déréférençages
+    
+    
+    
+    

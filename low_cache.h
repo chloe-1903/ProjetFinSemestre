@@ -101,6 +101,10 @@ struct Cache
 //! Recherche d'un bloc libre.
 struct Cache_Block_Header *Get_Free_Block(struct Cache *pcache);
 
+//! Initialisation des flags d'un nouveau header
+void Init_Free_Bloc_Flags(struct Cache_Block_Header *header);
+
+
 //! Adresse de l'enregistrement d'indice-fichier \a ind dans le bloc pointé par \a pb
 /*!
  * \ingroup low_cache_interface

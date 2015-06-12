@@ -1,0 +1,73 @@
+    N_RECORDS_IN_FILE = 30000
+
+Test_1 : boucle de lecture séquentielle : 
+	29999 lectures 30000 écritures 56999 succès (95.0 %)
+	60 syncs 0 déréférençages
+
+Test_2 : boucle écriture aléatoire : 
+	0 lectures 90000 écritures 871 succès (1.0 %)
+	91 syncs 0 déréférençages
+
+Test_3 : boucle lecture/écriture aléatoire : 
+	81002 lectures 9001 écritures 49044 succès (54.5 %)
+	92 syncs 0 déréférençages
+
+Test_4 : boucle lecture/écriture aléatoire avec localité : 
+	80986 lectures 9014 écritures 85469 succès (95.0 %)
+	91 syncs 0 déréférençages
+
+Test_5 : boucle lecture/écriture séquentielle avec localité : 
+	81000 lectures 9000 écritures 85963 succès (95.5 %)
+	91 syncs 0 déréférençages
+
+
+
+
+
+
+    N_RECORDS_IN_FILE = 100000
+
+Test_1 : boucle de lecture séquentielle : 
+	99999 lectures 100000 écritures 189999 succès (95.0 %)
+	200 syncs 0 déréférençages
+
+Test_2 : boucle écriture aléatoire : 
+	0 lectures 300000 écritures 3072 succès (1.0 %)
+	301 syncs 0 déréférençages
+
+Test_3 : boucle lecture/écriture aléatoire : 
+	270000 lectures 30000 écritures 163032 succès (54.3 %)
+	301 syncs 0 déréférençages
+
+Test_4 : boucle lecture/écriture aléatoire avec localité : 
+	269892 lectures 30108 écritures 296948 succès (99.0 %)
+	301 syncs 0 déréférençages
+
+Test_5 : boucle lecture/écriture séquentielle avec localité : 
+	270016 lectures 29984 écritures 296930 succès (99.0 %)
+	301 syncs 0 déréférençages
+    
+    
+    
+    
+    
+    N_RECORDS_IN_FILE = 5000
+    
+Test_1 : boucle de lecture séquentielle : 
+	4999 lectures 5000 écritures 9499 succès (95.0 %)
+	10 syncs 0 déréférençages
+
+Test_2 : boucle écriture aléatoire : 
+	0 lectures 15000 écritures 137 succès (0.9 %)
+	16 syncs 0 déréférençages
+
+Test_3 : boucle lecture/écriture aléatoire : 
+	13500 lectures 1500 écritures 8096 succès (54.0 %)
+	16 syncs 0 déréférençages
+
+Test_4 : boucle lecture/écriture aléatoire avec localité : 
+	13395 lectures 1605 écritures 2398 succès (16.0 %)
+	16 syncs 0 déréférençages
+
+Test_5 : boucle lecture/écriture séquentielle avec localité : 
+	6714 lectures 786 écritures 1553 succès (20.7 %)    

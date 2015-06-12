@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "cache_list.h"
 
 /*! Création d'une liste de blocs */
@@ -154,9 +155,9 @@ struct Cache_Block_Header *Cache_List_Remove(struct Cache_List *list,
     }
     if (cur->pheader == pbh){
     //Soit c'est il est seul dans la liste OK
-    	if (cur->prev=list && cur==list){
-		list->pheader=NULL;
-		return NULL;
+    	if ((cur->prev=list) && (cur==list)){
+            list->pheader=NULL;
+            return NULL;
 	    }
 	    //Soit c'est le dernier: Cas testé au début (car erreur sinon) mais devrait être testé ici
 	    /*else { 
