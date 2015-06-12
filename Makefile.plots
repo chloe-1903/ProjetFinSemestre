@@ -25,7 +25,7 @@ cache_size :
 		$(SCRIPTS)/plot.sh -T "Effet de la taille du cache zoomé" \
 			-o t$$t-cache_size-zoom -x "taille fichier / taille cache" \
 			-t $$t -L "20,70" \
-			-- -r 180 160 140 120 100 50 30 10 5 2 1 ; \
+			-- -r  200 180 160 140 120 100 50 30 10 5 2 1 ; \
 		$(SCRIPTS)/cache_size-inv.sh t$$t-cache_size $t ; \
 		$(SCRIPTS)/cache_size-inv.sh t$$t-cache_size-zoom $t ; \
 	done
